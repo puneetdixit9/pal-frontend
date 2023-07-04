@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot <Profile /> 1`] = `
+<div
+  className="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-1xez8po-MuiPaper-root-MuiCard-root"
+  style={
+    Object {
+      "alignContent": "center",
+      "alignItems": "center",
+      "justify": "center",
+    }
+  }
+>
+  <div
+    className="MuiCardContent-root css-46bh2p-MuiCardContent-root"
+  >
+    <div
+      className="MuiCardMedia-root css-1999db7-MuiCardMedia-root"
+      role="img"
+      style={
+        Object {
+          "backgroundImage": "url(\\"./profilepic.svg\\")",
+        }
+      }
+      title="profile pic"
+    />
+    <div
+      className="MuiTypography-root MuiTypography-h5 css-ag7rrr-MuiTypography-root"
+    >
+      Unknown
+       
+      User
+    </div>
+    <p
+      className="MuiTypography-root MuiTypography-body1 css-9eg9l8-MuiTypography-root"
+    >
+      N/A
+    </p>
+  </div>
+</div>
+`;

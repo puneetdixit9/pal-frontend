@@ -1,0 +1,71 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "OS": "Windows",
+      "RRP": 10990,
+      "Weight": "1.5 kg",
+      "_id": "6488289e3c6631099d99be82",
+      "article desc": "SANSUI 32 HD LED TVJSW32NSHD",
+      "article_id": "000000000492338564",
+      "attribute_4": "14 Inch",
+      "brand": "SAMSUNG",
+      "brick": "LED TV 31\" TO 40\"",
+      "category": "128GB-STORAGE-8GB-RAM",
+      "created_at": "2023-06-13 13:58:14",
+      "family": "laptop",
+      "launch_date": "2021-10-06T00:00:00.000Z",
+      "missing_attributes": true,
+      "sd": "SANSUI JSW32NSHD",
+      "type": "Electronics"
+    }
+  ],
+  "OS": [
+    "Windows"
+  ],
+  "RRP": [
+    10990
+  ],
+  "Weight": [
+    "1.5 kg"
+  ],
+  "_id": [
+    "6488289e3c6631099d99be82"
+  ],
+  "article desc": [
+    "SANSUI 32 HD LED TVJSW32NSHD"
+  ],
+  "article_id": [
+    "000000000492338564"
+  ],
+  "attribute_4": [
+    "14 Inch"
+  ],
+  "brand": [
+    "SAMSUNG"
+  ],
+  "brick": [
+    "LED TV 31\" TO 40\""
+  ],
+  "category": [
+    "128GB-STORAGE-8GB-RAM"
+  ],
+  "created_at": [
+    "2023-06-13 13:58:14"
+  ],
+  "family": [
+    "laptop"
+  ],
+  "launch_date": [
+    "2021-10-06T00:00:00.000Z"
+  ],
+  "missing_attributes": [
+    true
+  ],
+  "sd": [
+    "SANSUI JSW32NSHD"
+  ],
+  "type": [
+    "Electronics"
+  ]
+}
