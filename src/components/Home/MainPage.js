@@ -21,13 +21,13 @@ function MainPage() {
     const [updatedProductAttributes, setUpdatedProductAttributes] = useState({})
 
     const [selectedFamilyConfig, setSelectedFamilyConfig] = useState({})
-    const [missingChecked, setMissingChecked] = React.useState(true)
+    const [missingChecked, setMissingChecked] = useState(true)
+    const [requiredAttributeError, setRequiredAttributeError] = useState(false)
     const [attributeWithLabelMapping, setAttributeWithLabelMapping] = useState({})
     const [attributeUnits, setAttributeUnits] = useState({})
     const [attributeTypes, setAttributeTypes] = useState({})
     const [requiredAttributes, setRequiredAttributes] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
-    const [updatedValue, setUpdatedValue] = useState({})
 
     useEffect(() => {
         setMissingAttributeOptions(prevOptions => ({
@@ -95,8 +95,9 @@ function MainPage() {
     }, [selectedFamilyConfig, selectedProductAttributes, missingChecked]);
 
     const selectProductHandle = event => {
-        setUpdatedValue({})
+        setRequiredAttributeError(false)
         setMissingAttributeOptions({})
+        setUpdatedProductAttributes({})
         setselectedProduct(event.target.textContent)
         const selectedProductIndex = productState.products
             .map(e => e.article_desc)
@@ -142,10 +143,6 @@ function MainPage() {
                 dispatch(getDistinctFamilyAttributes(selectedProductAttributes.family, key))
             }
         }
-        setUpdatedValue({
-            ...updatedValue,
-            [key]: value
-        })
         setUpdatedProductAttributes({
             ...updatedProductAttributes,
             [key]: value,
@@ -157,11 +154,20 @@ function MainPage() {
     }
 
     const handleUpdate = event => {
-
-        dispatch(updateProductAttributesAction(productId, updatedProductAttributes))
-        if (productState && !productState.isAttributeUpdating && !productState.isAttributeUpdatingError) {
-            setUpdatedProductAttributes({})
-            dispatch(getProducts())
+        let error = false
+        for (const label in attributeWithLabelMapping) {
+            for (const key in attributeWithLabelMapping[label]) {
+                if (requiredAttributes.includes(key) &&
+                    attributeWithLabelMapping[label][key] === "" &&
+                    (!(key in updatedProductAttributes) ||
+                        !updatedProductAttributes[key].length)) {
+                    setRequiredAttributeError(true)
+                    error = true
+                }
+            }
+        }
+        if (error === false) {
+            dispatch(updateProductAttributesAction(productId, updatedProductAttributes))
         }
     }
 
@@ -195,7 +201,7 @@ function MainPage() {
                                 id={key}
                                 label={`${key}${key in attributeUnits ? ` (${attributeUnits[key]})` : ''}`}
                                 sx={{ minWidth: 250, m: 1 }}
-                                value={updatedValue[key] || value}
+                                value={updatedProductAttributes[key] || value}
                                 InputProps={{ readOnly: otherFieldsToDisplay.includes(key) }}
                                 type={`${key in attributeTypes ? attributeTypes[key] : 'text'}`}
                                 onChange={e => handleProductAttributeValue(key, e.target.value)}
@@ -230,6 +236,8 @@ function MainPage() {
                                     label={`${key}${key in attributeUnits ? ` (${attributeUnits[key]})` : ''}`}
                                     variant="outlined"
                                     required={requiredAttributes.includes(key)}
+                                    helperText={requiredAttributeError && !updatedProductAttributes[key] && requiredAttributes.includes(key) ? "Required Attribute." : ""}
+                                    error={requiredAttributeError && !updatedProductAttributes[key] && requiredAttributes.includes(key)}
                                 />
                             )}
                             filterOptions={(options, state) => {
