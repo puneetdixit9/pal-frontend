@@ -56,7 +56,6 @@ const Profile = () => {
                         {user.email}
                     </Typography>
                 </CardContent>
-
             </Card>
 
             <Card

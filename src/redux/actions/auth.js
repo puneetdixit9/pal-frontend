@@ -10,7 +10,6 @@ import {
 import apiClient from '../../services/apiClient'
 import { CHANGE_PASSWORD, LOGIN_API, REGISTER_API } from '../../constants'
 
-
 const globalConfig = {
     retry: 3,
     retryDelay: 1000,
@@ -38,13 +37,16 @@ export const register = payload2 => async dispatch => {
     }
 }
 
-export const password_reset = (payload) => async (dispatch) => {
+export const password_reset = payload => async dispatch => {
     console.log('Calling action : password_reset()')
     try {
-        const response = await apiClient.put(CHANGE_PASSWORD, payload, globalConfig)
+        const response = await apiClient.put(
+            CHANGE_PASSWORD,
+            payload,
+            globalConfig,
+        )
         return dispatch(fetchRegisterSuccess(response))
     } catch (err) {
         return dispatch(fetchRegisterFailed(err))
     }
-
 }

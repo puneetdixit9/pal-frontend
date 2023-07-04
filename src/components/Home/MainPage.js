@@ -6,7 +6,10 @@ import SearchIcon from '@mui/icons-material/Search'
 import InputAdornment from '@mui/material/InputAdornment'
 import Switch from '@mui/material/Switch'
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks'
-import { updateProductAttributesAction, getDistinctFamilyAttributes, getProducts } from '../../redux/actions/product'
+import {
+    updateProductAttributesAction,
+    getDistinctFamilyAttributes,
+} from '../../redux/actions/product'
 
 function MainPage() {
     const dispatch = useAppDispatch()
@@ -17,13 +20,17 @@ function MainPage() {
 
     const [selectedProduct, setselectedProduct] = useState('')
     const [productId, setProductId] = useState('')
-    const [selectedProductAttributes, setSelectedProductAttributes] = useState({})
+    const [selectedProductAttributes, setSelectedProductAttributes] = useState(
+        {},
+    )
     const [updatedProductAttributes, setUpdatedProductAttributes] = useState({})
 
     const [selectedFamilyConfig, setSelectedFamilyConfig] = useState({})
     const [missingChecked, setMissingChecked] = useState(true)
     const [requiredAttributeError, setRequiredAttributeError] = useState(false)
-    const [attributeWithLabelMapping, setAttributeWithLabelMapping] = useState({})
+    const [attributeWithLabelMapping, setAttributeWithLabelMapping] = useState(
+        {},
+    )
     const [attributeUnits, setAttributeUnits] = useState({})
     const [attributeTypes, setAttributeTypes] = useState({})
     const [requiredAttributes, setRequiredAttributes] = useState([])
@@ -32,30 +39,48 @@ function MainPage() {
     useEffect(() => {
         setMissingAttributeOptions(prevOptions => ({
             ...prevOptions,
-            [productState.distinctFamilyAttributes.attribute]: productState.distinctFamilyAttributes.response,
-        }));
-    }, [productState.distinctFamilyAttributes]);
+            [productState.distinctFamilyAttributes.attribute]:
+                productState.distinctFamilyAttributes.response,
+        }))
+    }, [productState.distinctFamilyAttributes])
 
     useEffect(() => {
-        const labelsWithData = {};
+        const labelsWithData = {}
         let attributesWithLabel = []
         let attributeUnitObject = {}
         let attributeTypesObject = {}
         let requiredAttributesArray = []
         if (selectedFamilyConfig && selectedProductAttributes) {
             for (const key in selectedFamilyConfig) {
-                const label = selectedFamilyConfig[key].label;
+                const label = selectedFamilyConfig[key].label
                 if (label) {
                     if (!labelsWithData[label]) {
-                        labelsWithData[label] = {};
+                        labelsWithData[label] = {}
                     }
-                    if (selectedFamilyConfig[key].name in selectedProductAttributes) {
-                        labelsWithData[label][selectedFamilyConfig[key].name] = selectedProductAttributes[selectedFamilyConfig[key].name];
+                    if (
+                        selectedFamilyConfig[key].name in
+                        selectedProductAttributes
+                    ) {
+                        labelsWithData[label][selectedFamilyConfig[key].name] =
+                            selectedProductAttributes[
+                                selectedFamilyConfig[key].name
+                            ]
                         attributesWithLabel.push(selectedFamilyConfig[key].name)
                     } else if (missingChecked) {
-                        labelsWithData[label][selectedFamilyConfig[key].name] = ""
-                        if (!(selectedFamilyConfig[key].name in missingAtttributesOptions)) {
-                            dispatch(getDistinctFamilyAttributes(selectedProductAttributes.family, selectedFamilyConfig[key].name))
+                        labelsWithData[label][selectedFamilyConfig[key].name] =
+                            ''
+                        if (
+                            !(
+                                selectedFamilyConfig[key].name in
+                                missingAtttributesOptions
+                            )
+                        ) {
+                            dispatch(
+                                getDistinctFamilyAttributes(
+                                    selectedProductAttributes.family,
+                                    selectedFamilyConfig[key].name,
+                                ),
+                            )
                         }
                     }
                 }
@@ -65,8 +90,9 @@ function MainPage() {
                 }
                 const type = selectedFamilyConfig[key].type
                 if (type) {
-                    if (type == "int" || type == "number" || type == "float") {
-                        attributeTypesObject[selectedFamilyConfig[key].name] = "number"
+                    if (type == 'int' || type == 'number' || type == 'float') {
+                        attributeTypesObject[selectedFamilyConfig[key].name] =
+                            'number'
                     }
                 }
                 const required = selectedFamilyConfig[key].required
@@ -74,10 +100,11 @@ function MainPage() {
                     requiredAttributesArray.push(selectedFamilyConfig[key].name)
                 }
             }
-            labelsWithData['Other'] = {};
+            labelsWithData['Other'] = {}
             for (const key in selectedProductAttributes) {
-                if (!(attributesWithLabel.includes(key))) {
-                    labelsWithData['Other'][key] = selectedProductAttributes[key];
+                if (!attributesWithLabel.includes(key)) {
+                    labelsWithData['Other'][key] =
+                        selectedProductAttributes[key]
                 }
             }
             if (!missingChecked) {
@@ -92,7 +119,7 @@ function MainPage() {
             setRequiredAttributes(requiredAttributesArray)
             setAttributeWithLabelMapping(labelsWithData)
         }
-    }, [selectedFamilyConfig, selectedProductAttributes, missingChecked]);
+    }, [selectedFamilyConfig, selectedProductAttributes, missingChecked])
 
     const selectProductHandle = event => {
         setRequiredAttributeError(false)
@@ -107,7 +134,7 @@ function MainPage() {
 
         let selectedFamilyConfig =
             productState.config[
-            productState.products[selectedProductIndex].family
+                productState.products[selectedProductIndex].family
             ]
 
         setSelectedFamilyConfig(selectedFamilyConfig)
@@ -119,28 +146,36 @@ function MainPage() {
 
         console.log(productAttributesObject)
 
-        let orderedProductAttributesObject = Object.keys(productAttributesObject).sort(function (a, b) { return (a.toLowerCase() < b.toLowerCase()) ? -1 : 1; }).reduce(
-            (obj, key) => {
-                obj[key] = productAttributesObject[key];
-                return obj;
-            },
-            {}
-        );
+        let orderedProductAttributesObject = Object.keys(
+            productAttributesObject,
+        )
+            .sort(function (a, b) {
+                return a.toLowerCase() < b.toLowerCase() ? -1 : 1
+            })
+            .reduce((obj, key) => {
+                obj[key] = productAttributesObject[key]
+                return obj
+            }, {})
         setSelectedProductAttributes(orderedProductAttributesObject)
     }
 
-    const handleSearch = (event) => {
-        setSearchQuery(event.target.value);
-    };
+    const handleSearch = event => {
+        setSearchQuery(event.target.value)
+    }
 
     const handleProductAttributeValue = (key, value) => {
         if (value.length === 0) {
             setSelectedProductAttributes({
                 ...selectedProductAttributes,
-                [key]: ""
+                [key]: '',
             })
             if (!(key in missingAtttributesOptions)) {
-                dispatch(getDistinctFamilyAttributes(selectedProductAttributes.family, key))
+                dispatch(
+                    getDistinctFamilyAttributes(
+                        selectedProductAttributes.family,
+                        key,
+                    ),
+                )
             }
         }
         setUpdatedProductAttributes({
@@ -157,23 +192,34 @@ function MainPage() {
         let error = false
         for (const label in attributeWithLabelMapping) {
             for (const key in attributeWithLabelMapping[label]) {
-                if (requiredAttributes.includes(key) &&
-                    attributeWithLabelMapping[label][key] === "" &&
+                if (
+                    requiredAttributes.includes(key) &&
+                    attributeWithLabelMapping[label][key] === '' &&
                     (!(key in updatedProductAttributes) ||
-                        !updatedProductAttributes[key].length)) {
+                        !updatedProductAttributes[key].length)
+                ) {
                     setRequiredAttributeError(true)
                     error = true
                 }
             }
         }
         if (error === false) {
-            dispatch(updateProductAttributesAction(productId, updatedProductAttributes))
+            dispatch(
+                updateProductAttributesAction(
+                    productId,
+                    updatedProductAttributes,
+                ),
+            )
         }
     }
 
     if (productState && !productState.isFamilyLoading) {
         productItems = productState.products
-            .filter(item => item.article_desc.toLowerCase().includes(searchQuery.toLowerCase()))
+            .filter(item =>
+                item.article_desc
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase()),
+            )
             .map(item => (
                 <Button
                     key={item._id}
@@ -185,80 +231,129 @@ function MainPage() {
                 >
                     {item.article_desc}
                 </Button>
-            ));
+            ))
     }
 
     function renderProductAttributes(label) {
         if (label && label in attributeWithLabelMapping) {
-            return Object.entries(attributeWithLabelMapping[label]).map(([key, value]) => {
-                if (value !== "") {
-                    if (label == "Other" && !otherFieldsToDisplay.includes(key)) {
-                        return null;
+            return Object.entries(attributeWithLabelMapping[label]).map(
+                ([key, value]) => {
+                    if (value !== '') {
+                        if (
+                            label == 'Other' &&
+                            !otherFieldsToDisplay.includes(key)
+                        ) {
+                            return null
+                        } else {
+                            return (
+                                <TextField
+                                    key={key}
+                                    id={key}
+                                    label={`${key}${
+                                        key in attributeUnits
+                                            ? ` (${attributeUnits[key]})`
+                                            : ''
+                                    }`}
+                                    sx={{ minWidth: 250, m: 1 }}
+                                    value={
+                                        updatedProductAttributes[key] || value
+                                    }
+                                    InputProps={{
+                                        readOnly:
+                                            otherFieldsToDisplay.includes(key),
+                                    }}
+                                    type={`${
+                                        key in attributeTypes
+                                            ? attributeTypes[key]
+                                            : 'text'
+                                    }`}
+                                    onChange={e =>
+                                        handleProductAttributeValue(
+                                            key,
+                                            e.target.value,
+                                        )
+                                    }
+                                    required={requiredAttributes.includes(key)}
+                                />
+                            )
+                        }
                     } else {
                         return (
-                            <TextField
+                            <Autocomplete
+                                sx={{
+                                    m: 1,
+                                    minWidth: 250,
+                                    maxWidth: 250,
+                                    display: 'inline-block',
+                                    wordBreak: 'break-word',
+                                }}
                                 key={key}
-                                id={key}
-                                label={`${key}${key in attributeUnits ? ` (${attributeUnits[key]})` : ''}`}
-                                sx={{ minWidth: 250, m: 1 }}
-                                value={updatedProductAttributes[key] || value}
-                                InputProps={{ readOnly: otherFieldsToDisplay.includes(key) }}
-                                type={`${key in attributeTypes ? attributeTypes[key] : 'text'}`}
-                                onChange={e => handleProductAttributeValue(key, e.target.value)}
-                                required={requiredAttributes.includes(key)}
+                                options={
+                                    missingAtttributesOptions[key]
+                                        ? missingAtttributesOptions[key]
+                                        : []
+                                }
+                                getOptionLabel={option => option}
+                                value=""
+                                onInputChange={(event, value) => {
+                                    setUpdatedProductAttributes({
+                                        ...updatedProductAttributes,
+                                        [key]: value,
+                                    })
+                                }}
+                                renderInput={params => (
+                                    <TextField
+                                        {...params}
+                                        type={`${
+                                            key in attributeTypes
+                                                ? attributeTypes[key]
+                                                : 'text'
+                                        }`}
+                                        label={`${key}${
+                                            key in attributeUnits
+                                                ? ` (${attributeUnits[key]})`
+                                                : ''
+                                        }`}
+                                        variant="outlined"
+                                        required={requiredAttributes.includes(
+                                            key,
+                                        )}
+                                        helperText={
+                                            requiredAttributeError &&
+                                            !updatedProductAttributes[key] &&
+                                            requiredAttributes.includes(key)
+                                                ? 'Required Attribute.'
+                                                : ''
+                                        }
+                                        error={
+                                            requiredAttributeError &&
+                                            !updatedProductAttributes[key] &&
+                                            requiredAttributes.includes(key)
+                                        }
+                                    />
+                                )}
+                                filterOptions={(options, state) => {
+                                    const inputValue = state.inputValue
+                                    return options.filter(option =>
+                                        option
+                                            .toLowerCase()
+                                            .includes(inputValue.toLowerCase()),
+                                    )
+                                }}
+                                freeSolo
                             />
-                        );
+                        )
                     }
-                } else {
-                    return (
-                        <Autocomplete
-                            sx={{
-                                m: 1,
-                                minWidth: 250,
-                                maxWidth: 250,
-                                display: 'inline-block',
-                                wordBreak: 'break-word',
-                            }}
-                            key={key}
-                            options={missingAtttributesOptions[key] ? missingAtttributesOptions[key] : []}
-                            getOptionLabel={(option) => option}
-                            value=""
-                            onInputChange={(event, value) => {
-                                setUpdatedProductAttributes({
-                                    ...updatedProductAttributes,
-                                    [key]: value,
-                                })
-                            }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    type={`${key in attributeTypes ? attributeTypes[key] : 'text'}`}
-                                    label={`${key}${key in attributeUnits ? ` (${attributeUnits[key]})` : ''}`}
-                                    variant="outlined"
-                                    required={requiredAttributes.includes(key)}
-                                    helperText={requiredAttributeError && !updatedProductAttributes[key] && requiredAttributes.includes(key) ? "Required Attribute." : ""}
-                                    error={requiredAttributeError && !updatedProductAttributes[key] && requiredAttributes.includes(key)}
-                                />
-                            )}
-                            filterOptions={(options, state) => {
-                                const inputValue = state.inputValue;
-                                return options.filter((option) => option.toLowerCase().includes(inputValue.toLowerCase()));
-                            }}
-                            freeSolo
-                        />
-
-                    );
-                }
-            });
+                },
+            )
         } else {
-            return null;
+            return null
         }
     }
 
-
     function renderLabelAndForm(label) {
         if (!label) {
-            return null;
+            return null
         }
         return (
             <>
@@ -272,19 +367,30 @@ function MainPage() {
                 >
                     {label}
                 </Box>
-                <form>
-                    {renderProductAttributes(label)}
-                </form>
+                <form>{renderProductAttributes(label)}</form>
             </>
-        );
+        )
     }
 
     return (
         <Grid container spacing={2} sx={{ p: 2 }}>
             <Grid item xs={12} sm={5} md={4} lg={3}>
                 <Card>
-                    <CardContent style={{ minHeight: '0px', maxHeight: '400px', overflow: 'auto' }}>
-                        <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: 'white' }}>
+                    <CardContent
+                        style={{
+                            minHeight: '0px',
+                            maxHeight: '400px',
+                            overflow: 'auto',
+                        }}
+                    >
+                        <div
+                            style={{
+                                position: 'sticky',
+                                top: 0,
+                                zIndex: 1,
+                                backgroundColor: 'white',
+                            }}
+                        >
                             <TextField
                                 id="outlined-basic"
                                 fullWidth
@@ -329,23 +435,23 @@ function MainPage() {
                         >
                             {[
                                 selectedProductAttributes.article_desc,
-                                " (",
+                                ' (',
                                 selectedProductAttributes.article_id,
-                                ")"
+                                ')',
                             ]}
                         </Box>
                     )}
 
-                    <form>
-                        {renderProductAttributes("Other")}
-                    </form>
+                    <form>{renderProductAttributes('Other')}</form>
 
-                    <>{Object.keys(attributeWithLabelMapping).map(key => {
-                        if (key !== 'Other') {
-                            return renderLabelAndForm(key);
-                        }
-                        return null;
-                    })}</>
+                    <>
+                        {Object.keys(attributeWithLabelMapping).map(key => {
+                            if (key !== 'Other') {
+                                return renderLabelAndForm(key)
+                            }
+                            return null
+                        })}
+                    </>
 
                     <form>
                         {selectedProduct && (
@@ -367,7 +473,7 @@ function MainPage() {
                                         onChange={handleMissingCheck}
                                     />
                                 </Stack>
-                                {missingChecked &&
+                                {missingChecked && (
                                     <Button
                                         variant="contained"
                                         color="primary"
@@ -380,7 +486,8 @@ function MainPage() {
                                         onClick={handleUpdate}
                                     >
                                         Update
-                                    </Button>}
+                                    </Button>
+                                )}
                             </Box>
                         )}
                     </form>

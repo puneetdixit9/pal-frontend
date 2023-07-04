@@ -1,25 +1,27 @@
 import React from 'react'
 
 function Products() {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([])
 
     useEffect(() => {
         async function fetchProducts() {
             try {
-                const response = await fetch('http://127.0.0.1:5000/pal/products');
-                const data = await response.json();
-                setProducts(data);
+                const response = await fetch(
+                    'http://127.0.0.1:5000/pal/products',
+                )
+                const data = await response.json()
+                setProducts(data)
                 console.log(products)
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error:', error)
             }
         }
-        fetchProducts();
-    }, []);
+        fetchProducts()
+    }, [])
 
     return (
         <div>
-            {products.map((product) => (
+            {products.map(product => (
                 <div key={product.id}>
                     <p>OS: {product.OS}</p>
                     <p>RRP: {product.RRP}</p>

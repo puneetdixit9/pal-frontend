@@ -28,7 +28,6 @@ const removeUser = () => {
 
 const isAuthenticated = () => {
     return JSON.parse(localStorage.getItem('user')) !== null
-
 }
 
 const UserSession = {

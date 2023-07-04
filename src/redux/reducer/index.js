@@ -3,5 +3,5 @@ import productReducer from './product'
 
 export const rootReducer = {
     authReducer: authReducer,
-    productReducer: productReducer
+    productReducer: productReducer,
 }

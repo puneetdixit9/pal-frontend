@@ -68,7 +68,7 @@ const TopBar = () => {
                             fontFamily: 'roboto',
                             color: 'inherit',
                             textDecoration: 'none',
-                        }}  
+                        }}
                     >
                         Product Attribute Labelling
                     </Typography>
@@ -151,7 +151,7 @@ const TopBar = () => {
                     >
                         {UserSession.isAuthenticated() && (
                             <Button
-                            href="/"
+                                href="/"
                                 key="Dashboard"
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}

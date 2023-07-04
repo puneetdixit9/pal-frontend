@@ -5,10 +5,15 @@ import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import Button from '@mui/material/Button'
 import SearchIcon from '@mui/icons-material/Search'
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from '@mui/icons-material/Refresh'
 import Box from '@mui/material/Box'
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks'
-import { getFamily, getBrand, getCategory, getProducts } from '../../redux/actions/product'
+import {
+    getFamily,
+    getBrand,
+    getCategory,
+    getProducts,
+} from '../../redux/actions/product'
 import { useEffect } from 'react'
 
 const TopSearch = () => {
@@ -64,7 +69,7 @@ const TopSearch = () => {
             dispatch(getBrand(event.target.value))
         }
         // if (category === '') {
-            dispatch(getCategory(event.target.value, brand))
+        dispatch(getCategory(event.target.value, brand))
         // }
     }
 
@@ -74,7 +79,7 @@ const TopSearch = () => {
             dispatch(getFamily(event.target.value))
         }
         // if (category === '') {
-            dispatch(getCategory(family, event.target.value))
+        dispatch(getCategory(family, event.target.value))
         // }
     }
 
@@ -88,10 +93,10 @@ const TopSearch = () => {
 
     const handleReset = event => {
         // dispatch(getProducts(family, brand, category))
-        setCategory("")
-        setBrand("")
-        setFamily("")
-        dispatch(getProducts("", "", ""))
+        setCategory('')
+        setBrand('')
+        setFamily('')
+        dispatch(getProducts('', '', ''))
     }
 
     return (

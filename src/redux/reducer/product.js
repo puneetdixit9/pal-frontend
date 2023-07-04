@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-
 const initialState = {
     isFamilyLoading: false,
     isBrandLoading: false,
@@ -14,8 +13,8 @@ const initialState = {
     category: [],
     config: {},
     distinctFamilyAttributes: {},
-    message: "",
-    isError: false
+    message: '',
+    isError: false,
 }
 
 export const productReducer = createSlice({
@@ -97,7 +96,6 @@ export const productReducer = createSlice({
             }
         },
 
-
         fetchCategory(state, action) {
             return {
                 ...state,
@@ -128,7 +126,7 @@ export const productReducer = createSlice({
                 ...state,
                 isAttributeUpdating: true,
                 isAttributeUpdatingError: false,
-                message: "",
+                message: '',
                 isError: false,
             }
         },
@@ -137,9 +135,9 @@ export const productReducer = createSlice({
             return {
                 ...state,
                 isAttributeUpdating: false,
-                message: "Attributes Updated",
+                message: 'Attributes Updated',
                 isError: false,
-                isAttributeUpdatingError: false
+                isAttributeUpdatingError: false,
             }
         },
         updateAttributesFailed(state, action) {
@@ -148,12 +146,9 @@ export const productReducer = createSlice({
                 message: 'Update Attributes Failed',
                 isError: true,
                 isAttributeUpdating: false,
-                isAttributeUpdatingError: true
+                isAttributeUpdatingError: true,
             }
         },
-
-
-
 
         fetchConfig(state, action) {
             return {
@@ -163,17 +158,17 @@ export const productReducer = createSlice({
             }
         },
         fetchConfigSuccess(state, action) {
-
             let family_config = {}
             for (var i = 0, l = action.payload.length; i < l; i++) {
-                var obj = action.payload[i];
+                var obj = action.payload[i]
                 family_config[obj.family] = {}
                 for (var key in obj) {
-                    if (key.includes("attribute")) {
+                    if (key.includes('attribute')) {
                         family_config[obj.family][key] = obj[key]
                     }
                 }
-                family_config[obj.family]["otherFieldsToDispaly"] = obj.other_field_to_display ? obj.other_field_to_display : []
+                family_config[obj.family]['otherFieldsToDispaly'] =
+                    obj.other_field_to_display ? obj.other_field_to_display : []
             }
             return {
                 ...state,
@@ -190,8 +185,6 @@ export const productReducer = createSlice({
                 isConfigLoading: false,
             }
         },
-
-
 
         fetchDistinctFamilyAttributes(state, action) {
             return {
@@ -216,11 +209,8 @@ export const productReducer = createSlice({
                 isDistinctFamilyAttributesLoading: false,
             }
         },
-
-
     },
 })
-
 
 export const {
     fetchProduct,
@@ -243,7 +233,7 @@ export const {
     fetchConfigFailed,
     fetchDistinctFamilyAttributes,
     fetchDistinctFamilyAttributesSuccess,
-    fetchDistinctFamilyAttributesFailed
+    fetchDistinctFamilyAttributesFailed,
 } = productReducer.actions
 
 export default productReducer.reducer
