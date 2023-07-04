@@ -26,6 +26,8 @@ function MainPage() {
     const [attributeUnits, setAttributeUnits] = useState({})
     const [attributeTypes, setAttributeTypes] = useState({})
     const [requiredAttributes, setRequiredAttributes] = useState([])
+    const [searchQuery, setSearchQuery] = useState('')
+    const [updatedValue, setUpdatedValue] = useState({})
 
     useEffect(() => {
         setMissingAttributeOptions(prevOptions => ({
@@ -93,6 +95,7 @@ function MainPage() {
     }, [selectedFamilyConfig, selectedProductAttributes, missingChecked]);
 
     const selectProductHandle = event => {
+        setUpdatedValue({})
         setMissingAttributeOptions({})
         setselectedProduct(event.target.textContent)
         const selectedProductIndex = productState.products
@@ -125,14 +128,22 @@ function MainPage() {
         setSelectedProductAttributes(orderedProductAttributesObject)
     }
 
-
+    const handleSearch = (event) => {
+        setSearchQuery(event.target.value);
+    };
 
     const handleProductAttributeValue = (key, value) => {
-        if (value.length > 1) {
-            value = value.trimStart();
+        if (value.length === 0) {
+            setSelectedProductAttributes({
+                ...selectedProductAttributes,
+                [key]: ""
+            })
+            if (!(key in missingAtttributesOptions)) {
+                dispatch(getDistinctFamilyAttributes(selectedProductAttributes.family, key))
+            }
         }
-        setSelectedProductAttributes({
-            ...selectedProductAttributes,
+        setUpdatedValue({
+            ...updatedValue,
             [key]: value
         })
         setUpdatedProductAttributes({
@@ -155,8 +166,9 @@ function MainPage() {
     }
 
     if (productState && !productState.isFamilyLoading) {
-        productItems = productState.products.map(item => {
-            return (
+        productItems = productState.products
+            .filter(item => item.article_desc.toLowerCase().includes(searchQuery.toLowerCase()))
+            .map(item => (
                 <Button
                     key={item._id}
                     onClick={selectProductHandle}
@@ -167,14 +179,13 @@ function MainPage() {
                 >
                     {item.article_desc}
                 </Button>
-            )
-        })
+            ));
     }
 
     function renderProductAttributes(label) {
         if (label && label in attributeWithLabelMapping) {
             return Object.entries(attributeWithLabelMapping[label]).map(([key, value]) => {
-                if (value !== '') {
+                if (value !== "") {
                     if (label == "Other" && !otherFieldsToDisplay.includes(key)) {
                         return null;
                     } else {
@@ -184,7 +195,7 @@ function MainPage() {
                                 id={key}
                                 label={`${key}${key in attributeUnits ? ` (${attributeUnits[key]})` : ''}`}
                                 sx={{ minWidth: 250, m: 1 }}
-                                value={value}
+                                value={updatedValue[key] || value}
                                 InputProps={{ readOnly: otherFieldsToDisplay.includes(key) }}
                                 type={`${key in attributeTypes ? attributeTypes[key] : 'text'}`}
                                 onChange={e => handleProductAttributeValue(key, e.target.value)}
@@ -223,7 +234,7 @@ function MainPage() {
                             )}
                             filterOptions={(options, state) => {
                                 const inputValue = state.inputValue;
-                                return options.filter((option) => option.includes(inputValue));
+                                return options.filter((option) => option.toLowerCase().includes(inputValue.toLowerCase()));
                             }}
                             freeSolo
                         />
@@ -278,6 +289,8 @@ function MainPage() {
                                         </InputAdornment>
                                     ),
                                 }}
+                                value={searchQuery}
+                                onChange={handleSearch}
                             />
                         </div>
                         {productItems.map((item, index) => (
