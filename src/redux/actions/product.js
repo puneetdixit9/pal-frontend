@@ -3,8 +3,8 @@ import { PRODUCT, PRODUCTS, CONFIG } from '../../constants'
 
 
 import {
-    fetchProduct, 
-    fetchProductSuccess, 
+    fetchProduct,
+    fetchProductSuccess,
     fetchProductFailed,
     fetchFamily,
     fetchFamilySuccess,
@@ -18,24 +18,24 @@ import {
     updateAttributes,
     updateAttributesSuccess,
     updateAttributesFailed,
-    fetchConfig, 
-    fetchConfigSuccess, 
+    fetchConfig,
+    fetchConfigSuccess,
     fetchConfigFailed,
-    fetchDistinctFamilyAttributes, 
-    fetchDistinctFamilyAttributesSuccess, 
+    fetchDistinctFamilyAttributes,
+    fetchDistinctFamilyAttributesSuccess,
     fetchDistinctFamilyAttributesFailed
 } from '../reducer/product'
 
 
-function getProductAPIqueryParams(family, brand, category){
+function getProductAPIqueryParams(family, brand, category) {
     let queryParams = "?"
-    if (typeof family !== 'undefined' && family !== ""){
+    if (typeof family !== 'undefined' && family !== "") {
         queryParams = queryParams + "family=" + family + "&"
     }
-    if (typeof brand !== 'undefined' && brand !== ""){
+    if (typeof brand !== 'undefined' && brand !== "") {
         queryParams = queryParams + "brand=" + brand + "&"
     }
-    if (typeof category !== 'undefined' && category !== ""){
+    if (typeof category !== 'undefined' && category !== "") {
         queryParams = queryParams + "category=" + category + "&"
     }
     return queryParams
@@ -45,9 +45,9 @@ export const getProducts = (family, brand, category) => async dispatch => {
     // console.log('Calling Action : getProducts()')
     await dispatch(fetchProduct())
     try {
-        const endpoint = getProductAPIqueryParams(family, brand, category)
-        const response = await apiClient.get(`${PRODUCTS}${endpoint}`)
-        
+        const queryParams = getProductAPIqueryParams(family, brand, category)
+        const response = await apiClient.get(`${PRODUCTS}${queryParams}`)
+
         return dispatch(fetchProductSuccess(response.data))
     } catch (err) {
         return dispatch(fetchProductFailed(err))
@@ -60,7 +60,7 @@ export const getFamily = (brand) => async dispatch => {
     await dispatch(fetchFamily())
     try {
         let response = ""
-        if (typeof brand !== 'undefined'){
+        if (typeof brand !== 'undefined') {
             response = await apiClient.get(`${PRODUCTS}/family?brand=${brand}`)
         }
         else {
@@ -81,13 +81,13 @@ export const getCategory = (family, brand) => async dispatch => {
     await dispatch(fetchCategory())
     try {
         let response = ""
-        if (typeof brand !== 'undefined'  && (typeof family === 'undefined' || family==="") ){
+        if (typeof brand !== 'undefined' && (typeof family === 'undefined' || family === "")) {
             response = await apiClient.get(`${PRODUCTS}/category?brand=${brand}`)
         }
-        else if ( typeof family !== 'undefined' && (typeof brand === 'undefined' || brand==="")){
+        else if (typeof family !== 'undefined' && (typeof brand === 'undefined' || brand === "")) {
             response = await apiClient.get(`${PRODUCTS}/category?family=${family}`)
         }
-        else if ( typeof family !== 'undefined' && typeof brand !== 'undefined'){
+        else if (typeof family !== 'undefined' && typeof brand !== 'undefined') {
             response = await apiClient.get(`${PRODUCTS}/category?family=${family}&brand=${brand}`)
         }
         else {
@@ -106,7 +106,7 @@ export const getBrand = (family) => async dispatch => {
     await dispatch(fetchBrand())
     try {
         let response = ""
-        if (typeof family !== 'undefined'){
+        if (typeof family !== 'undefined') {
             response = await apiClient.get(`${PRODUCTS}/family/${family}/brand`)
         }
         else {
@@ -139,10 +139,10 @@ export const getDistinctFamilyAttributes = (family, attribute) => async dispatch
     try {
         const response = await apiClient.get(`${PRODUCTS}/family/${family}/${attribute}`)
         console.log('Response from distinctFamilyAttributes():', response.data)
-        const responseWithFields = {"response":  response.data, "attribute": attribute}
+        const responseWithFields = { "response": response.data, "attribute": attribute }
         // let responseWithFields = {}
         // responseWithFields[attribute] =  response.data
-        
+
         return dispatch(fetchDistinctFamilyAttributesSuccess(responseWithFields))
     } catch (err) {
         return dispatch(fetchDistinctFamilyAttributesFailed(err))
@@ -156,7 +156,7 @@ export const updateProductAttributesAction = (id, attributes) => async dispatch 
     try {
         const response = await apiClient.put(`${PRODUCT}/${id}`, attributes)
         console.log('Response from updateProductAttributesAction():', response.data)
-        
+
         return dispatch(updateAttributesSuccess())
     } catch (err) {
         return dispatch(updateAttributesFailed(err))

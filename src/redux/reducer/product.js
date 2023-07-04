@@ -4,16 +4,17 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     isFamilyLoading: false,
     isBrandLoading: false,
-    isConfigLoading : false, 
+    isConfigLoading: false,
     isCategoryLoading: false,
     isAttributeUpdating: false,
+    isAttributeUpdatingError: false,
     family: [],
     products: [],
     brand: [],
     category: [],
     config: {},
-    distinctFamilyAttributes : {},
-    message :"", 
+    distinctFamilyAttributes: {},
+    message: "",
     isError: false
 }
 
@@ -126,7 +127,8 @@ export const productReducer = createSlice({
             return {
                 ...state,
                 isAttributeUpdating: true,
-                message: "", 
+                isAttributeUpdatingError: false,
+                message: "",
                 isError: false,
             }
         },
@@ -137,6 +139,7 @@ export const productReducer = createSlice({
                 isAttributeUpdating: false,
                 message: "Attributes Updated",
                 isError: false,
+                isAttributeUpdatingError: false
             }
         },
         updateAttributesFailed(state, action) {
@@ -145,6 +148,7 @@ export const productReducer = createSlice({
                 message: 'Update Attributes Failed',
                 isError: true,
                 isAttributeUpdating: false,
+                isAttributeUpdatingError: true
             }
         },
 
@@ -159,19 +163,18 @@ export const productReducer = createSlice({
             }
         },
         fetchConfigSuccess(state, action) {
-            // console.log('Config:', action.payload)
-            
+
             let family_config = {}
             for (var i = 0, l = action.payload.length; i < l; i++) {
                 var obj = action.payload[i];
                 family_config[obj.family] = {}
                 for (var key in obj) {
-                    if (key.includes("attribute")){
+                    if (key.includes("attribute")) {
                         family_config[obj.family][key] = obj[key]
                     }
-                    }}
-                    
-            // console.log("family_config", family_config)
+                }
+                family_config[obj.family]["otherFieldsToDispaly"] = obj.other_field_to_display ? obj.other_field_to_display : []
+            }
             return {
                 ...state,
                 isConfigLoading: false,
@@ -197,7 +200,7 @@ export const productReducer = createSlice({
                 isError: false,
             }
         },
-        fetchDistinctFamilyAttributesSuccess(state, action) {    
+        fetchDistinctFamilyAttributesSuccess(state, action) {
             return {
                 ...state,
                 isDistinctFamilyAttributesLoading: false,
@@ -235,11 +238,11 @@ export const {
     updateAttributes,
     updateAttributesSuccess,
     updateAttributesFailed,
-    fetchConfig, 
-    fetchConfigSuccess, 
-    fetchConfigFailed, 
-    fetchDistinctFamilyAttributes, 
-    fetchDistinctFamilyAttributesSuccess, 
+    fetchConfig,
+    fetchConfigSuccess,
+    fetchConfigFailed,
+    fetchDistinctFamilyAttributes,
+    fetchDistinctFamilyAttributesSuccess,
     fetchDistinctFamilyAttributesFailed
 } = productReducer.actions
 
