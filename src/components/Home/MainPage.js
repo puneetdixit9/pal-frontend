@@ -359,13 +359,13 @@ function MainPage() {
             <>
                 <Box
                     sx={{
-                        fontSize: 25,
+                        fontSize: 22,
                         fontWeight: 'bold',
                         textTransform: 'capitalize',
-                        m: 1,
+                        m: 2,
                     }}
                 >
-                    {label}
+                    {label.toUpperCase()}
                 </Box>
                 <form>{renderProductAttributes(label)}</form>
             </>
@@ -427,16 +427,16 @@ function MainPage() {
                     {Object.keys(selectedProductAttributes).length > 1 && (
                         <Box
                             sx={{
-                                fontSize: 25,
+                                fontSize: 30,
                                 fontWeight: 'bold',
                                 textTransform: 'capitalize',
                                 m: 1,
                             }}
                         >
                             {[
-                                selectedProductAttributes.article_desc,
+                                selectedProductAttributes.article_desc.toUpperCase(),
                                 ' (',
-                                selectedProductAttributes.article_id,
+                                selectedProductAttributes.article_id.toUpperCase(),
                                 ')',
                             ]}
                         </Box>

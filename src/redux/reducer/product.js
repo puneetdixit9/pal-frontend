@@ -29,7 +29,6 @@ export const productReducer = createSlice({
             }
         },
         fetchProductSuccess(state, action) {
-            // console.log('Products:', action.payload)
             return {
                 ...state,
                 isProductLoading: false,
@@ -54,7 +53,6 @@ export const productReducer = createSlice({
             }
         },
         fetchFamilySuccess(state, action) {
-            // console.log('Family:', action.payload)
             return {
                 ...state,
                 isFamilyLoading: false,
@@ -79,7 +77,6 @@ export const productReducer = createSlice({
             }
         },
         fetchBrandSuccess(state, action) {
-            // console.log('Brand:', action.payload)
             return {
                 ...state,
                 isBrandLoading: false,
@@ -104,7 +101,6 @@ export const productReducer = createSlice({
             }
         },
         fetchCategorySuccess(state, action) {
-            // console.log('Category:', action.payload)
             return {
                 ...state,
                 isCategoryLoading: false,
@@ -131,7 +127,6 @@ export const productReducer = createSlice({
             }
         },
         updateAttributesSuccess(state, action) {
-            // console.log('Category:', action.payload)
             return {
                 ...state,
                 isAttributeUpdating: false,
@@ -168,7 +163,7 @@ export const productReducer = createSlice({
                     }
                 }
                 family_config[obj.family]['otherFieldsToDispaly'] =
-                    obj.other_field_to_display ? obj.other_field_to_display : []
+                    obj.other_fields_to_display ? obj.other_fields_to_display : []
             }
             return {
                 ...state,
