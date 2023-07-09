@@ -1,8 +1,5 @@
 import * as React from 'react'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import { TextField, Autocomplete } from '@mui/material'
 import Button from '@mui/material/Button'
 import SearchIcon from '@mui/icons-material/Search'
 import RefreshIcon from '@mui/icons-material/Refresh'
@@ -29,62 +26,24 @@ const TopSearch = () => {
         dispatch(getCategory())
     }, [])
 
-    let familyItems = []
-    let brandItems = []
-    let categoryItems = []
-
-    if (productState && !productState.isFamilyLoading) {
-        familyItems = productState.family.map(item => {
-            return (
-                <MenuItem name={item} key={item} value={item}>
-                    {item}
-                </MenuItem>
-            )
-        })
-    }
-
-    if (productState && !productState.isBrandLoading) {
-        brandItems = productState.brand.map(item => {
-            return (
-                <MenuItem name={item} key={item} value={item}>
-                    {item}
-                </MenuItem>
-            )
-        })
-    }
-
-    if (productState && !productState.isCategoryLoading) {
-        categoryItems = productState.category.map(item => {
-            return (
-                <MenuItem name={item} key={item} value={item}>
-                    {item}
-                </MenuItem>
-            )
-        })
-    }
-
-    const handleFamilyChange = event => {
-        setFamily(event.target.value)
+    function handleFamilyChange(value) {
+        setFamily(value)
         if (brand === '') {
-            dispatch(getBrand(event.target.value))
+            dispatch(getBrand(value))
         }
-        // if (category === '') {
-        dispatch(getCategory(event.target.value, brand))
-        // }
+        dispatch(getCategory(value, brand))
     }
 
-    const handleBrandChange = event => {
-        setBrand(event.target.value)
+    function handleBrandChange(value) {
+        setBrand(value)
         if (family === '') {
-            dispatch(getFamily(event.target.value))
+            dispatch(getFamily(value))
         }
-        // if (category === '') {
-        dispatch(getCategory(family, event.target.value))
-        // }
+        dispatch(getCategory(family, value))
     }
 
-    const handleCategoryChange = event => {
-        setCategory(event.target.value)
+    function handleCategoryChange(value) {
+        setCategory(value)
     }
 
     const handleSearch = event => {
@@ -108,48 +67,94 @@ const TopSearch = () => {
                 justifyContent: 'center',
             }}
         >
-            <FormControl sx={{ m: 1, minWidth: 250 }}>
-                <InputLabel id="demo-simple-select-helper-label">
-                    Family
-                </InputLabel>
-                <Select
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
-                    value={family}
-                    label="Family"
-                    onChange={handleFamilyChange}
-                >
-                    {familyItems}
-                </Select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 250 }}>
-                <InputLabel id="demo-simple-select-helper-label">
-                    Brand
-                </InputLabel>
-                <Select
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
-                    value={brand}
-                    label="Brand"
-                    onChange={handleBrandChange}
-                >
-                    {brandItems}
-                </Select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 250 }}>
-                <InputLabel id="demo-simple-select-helper-label">
-                    Category
-                </InputLabel>
-                <Select
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
-                    value={category}
-                    label="Category"
-                    onChange={handleCategoryChange}
-                >
-                    {categoryItems}
-                </Select>
-            </FormControl>
+
+            <Autocomplete
+                sx={{
+                    m: 1,
+                    minWidth: 250,
+                    maxWidth: 250,
+                    display: 'inline-block',
+                    wordBreak: 'break-word',
+                }}
+                options={productState.family}
+                getOptionLabel={option => option}
+                onChange={(event, value) => {
+                    if (value) {
+                        handleFamilyChange(value);
+                    }
+                }}
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        label='Select Family'
+                        variant="outlined"
+                    />
+                )}
+                filterOptions={(options, state) => {
+                    const inputValue = state.inputValue
+                    return options.filter(option =>
+                        option.toLowerCase().includes(inputValue.toLowerCase()),
+                    )
+                }}
+            />
+            <Autocomplete
+                sx={{
+                    m: 1,
+                    minWidth: 250,
+                    maxWidth: 250,
+                    display: 'inline-block',
+                    wordBreak: 'break-word',
+                }}
+                options={productState.brand}
+                getOptionLabel={option => option}
+                onChange={(event, value) => {
+                    if (value) {
+                        handleBrandChange(value);
+                    }
+                }}
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        label='Select Brand'
+                        variant="outlined"
+                    />
+                )}
+                filterOptions={(options, state) => {
+                    const inputValue = state.inputValue
+                    return options.filter(option =>
+                        option.toLowerCase().includes(inputValue.toLowerCase()),
+                    )
+                }}
+            />
+            <Autocomplete
+                sx={{
+                    m: 1,
+                    minWidth: 250,
+                    maxWidth: 250,
+                    display: 'inline-block',
+                    wordBreak: 'break-word',
+                }}
+                options={productState.category}
+                getOptionLabel={option => option}
+                onChange={(event, value) => {
+                    if (value) {
+                        handleCategoryChange(value);
+                    }
+                }}
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        label='Select Category'
+                        variant="outlined"
+                    />
+                )}
+                filterOptions={(options, state) => {
+                    const inputValue = state.inputValue
+                    return options.filter(option =>
+                        option.toLowerCase().includes(inputValue.toLowerCase()),
+                    )
+                }}
+            />
             <Button
                 sx={{ m: 2, ml: 5, display: { md: 'flex' }, minWidth: 150 }}
                 variant="contained"

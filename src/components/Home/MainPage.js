@@ -227,6 +227,7 @@ function MainPage() {
                     sx={{
                         fontSize: 15,
                         fontWeight: 'regular',
+                        color: item.missing_attributes ? 'red' : ''
                     }}
                 >
                     {item.article_desc}
