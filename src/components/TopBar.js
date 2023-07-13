@@ -61,7 +61,7 @@ const TopBar = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
+                        href="/app"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -151,7 +151,7 @@ const TopBar = () => {
                     >
                         {UserSession.isAuthenticated() && (
                             <Button
-                                href="/"
+                                href="/app"
                                 key="Dashboard"
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -161,7 +161,7 @@ const TopBar = () => {
                         )}
                         <Button
                             key="About"
-                            onClick={() => navigate('/about')}
+                            onClick={() => navigate('/app/about')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             About
@@ -209,7 +209,7 @@ const TopBar = () => {
                                 >
                                     <MenuItem
                                         onClick={() => {
-                                            navigate('/profile')
+                                            navigate('/app/profile')
                                         }}
                                     >
                                         Profile
@@ -227,7 +227,7 @@ const TopBar = () => {
                                     <MenuItem
                                         onClick={() => {
                                             UserSession.removeUser()
-                                            navigate('/signin')
+                                            navigate('/app/signin')
                                         }}
                                     >
                                         Logout
@@ -235,10 +235,10 @@ const TopBar = () => {
                                 </Menu>
                             </Box>
                         </>
-                    ) : location.pathname === '/signup' ? (
+                    ) : location.pathname === '/app/signup' ? (
                         <Button
                             key="Login"
-                            onClick={() => navigate('/signin')}
+                            onClick={() => navigate('/app/signin')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             Login
@@ -246,7 +246,7 @@ const TopBar = () => {
                     ) : (
                         <Button
                             key="Signup"
-                            onClick={() => navigate('/signup')}
+                            onClick={() => navigate('/app/signup')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             Sign Up

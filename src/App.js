@@ -16,20 +16,20 @@ function App() {
                 <Routes>
                     <Route
                         exact
-                        path="/"
+                        path="/app"
                         element={<Home />}
                         render={() => {
                             return UserSession.isAuthenticated() ? (
-                                <Navigate to="/" />
+                                <Navigate to="/app" />
                             ) : (
-                                <Navigate to="/signin" />
+                                <Navigate to="/app/signin" />
                             )
                         }}
                     />
 
-                    <Route path="/signin" element={<SignIn />}></Route>
-                    <Route path="/signup" element={<SignUp />}></Route>
-                    <Route path="/about" element={<About />}></Route>
+                    <Route path="/app/signin" element={<SignIn />}></Route>
+                    <Route path="/app/signup" element={<SignUp />}></Route>
+                    <Route path="/app/about" element={<About />}></Route>
                     {/* <Route path="/profile" element={<Profile />}></Route> */}
                 </Routes>
             </div>
