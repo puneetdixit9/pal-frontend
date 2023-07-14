@@ -7,7 +7,6 @@ import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks'
 import {
     getProducts,
     getConfig,
-    getDistinctFamilyAttributes,
 } from '../../redux/actions/product'
 
 const Home = () => {

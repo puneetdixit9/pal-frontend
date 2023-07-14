@@ -51,7 +51,6 @@ const TopSearch = () => {
     }
 
     const handleReset = event => {
-        // dispatch(getProducts(family, brand, category))
         setCategory('')
         setBrand('')
         setFamily('')

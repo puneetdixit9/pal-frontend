@@ -27,9 +27,9 @@ export default function SignIn() {
 
     React.useEffect(() => {
         if (UserSession.isAuthenticated()) {
-            navigate('/app')
+            navigate('/pal')
         } else {
-            navigate('/app/signin')
+            navigate('/pal/signin')
         }
     }, [UserSession.isAuthenticated()])
 
@@ -110,7 +110,7 @@ export default function SignIn() {
                 </Link> */}
                             </Grid>
                             <Grid item>
-                                <Link to="/app/signup" variant="body2">
+                                <Link to="/pal/signup" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

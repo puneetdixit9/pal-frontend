@@ -1,21 +1,14 @@
 import * as React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import { NavLink, Link } from 'react-router-dom'
-import GlobalStyles from '@mui/material/GlobalStyles'
 import UserSession from '../services/auth'
 import { useNavigate } from 'react-router-dom'
-import AccountCircle from '@mui/icons-material/AccountCircle'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import SearchIcon from '@mui/icons-material/Search'
-import { styled, alpha } from '@mui/material/styles'
-import InputBase from '@mui/material/InputBase'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import Badge from '@mui/material/Badge'
 import { useLocation } from 'react-router-dom'
@@ -61,7 +54,7 @@ const TopBar = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/app"
+                        href="/pal"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -151,7 +144,7 @@ const TopBar = () => {
                     >
                         {UserSession.isAuthenticated() && (
                             <Button
-                                href="/app"
+                                href="/pal"
                                 key="Dashboard"
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -161,7 +154,7 @@ const TopBar = () => {
                         )}
                         <Button
                             key="About"
-                            onClick={() => navigate('/app/about')}
+                            onClick={() => navigate('/pal/about')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             About
@@ -209,7 +202,7 @@ const TopBar = () => {
                                 >
                                     <MenuItem
                                         onClick={() => {
-                                            navigate('/app/profile')
+                                            navigate('/pal/profile')
                                         }}
                                     >
                                         Profile
@@ -227,7 +220,7 @@ const TopBar = () => {
                                     <MenuItem
                                         onClick={() => {
                                             UserSession.removeUser()
-                                            navigate('/app/signin')
+                                            navigate('/pal/signin')
                                         }}
                                     >
                                         Logout
@@ -235,10 +228,10 @@ const TopBar = () => {
                                 </Menu>
                             </Box>
                         </>
-                    ) : location.pathname === '/app/signup' ? (
+                    ) : location.pathname === '/pal/signup' ? (
                         <Button
                             key="Login"
-                            onClick={() => navigate('/app/signin')}
+                            onClick={() => navigate('/pal/signin')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             Login
@@ -246,7 +239,7 @@ const TopBar = () => {
                     ) : (
                         <Button
                             key="Signup"
-                            onClick={() => navigate('/app/signup')}
+                            onClick={() => navigate('/pal/signup')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             Sign Up
