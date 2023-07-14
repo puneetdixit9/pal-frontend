@@ -15,22 +15,30 @@ function App() {
             <div style={{ margin: 40 }}>
                 <Routes>
                     <Route
-                        exact
                         path="/"
+                        element={<Navigate to="/pal" />}
+                    />
+                    <Route
+                        exact
+                        path="/pal"
                         element={<Home />}
                         render={() => {
                             return UserSession.isAuthenticated() ? (
-                                <Navigate to="/" />
+                                <Navigate to="/pal" />
                             ) : (
-                                <Navigate to="/signin" />
+                                <Navigate to="/pal/signin" />
                             )
                         }}
                     />
 
-                    <Route path="/signin" element={<SignIn />}></Route>
-                    <Route path="/signup" element={<SignUp />}></Route>
-                    <Route path="/about" element={<About />}></Route>
-                    {/* <Route path="/profile" element={<Profile />}></Route> */}
+                    <Route path="/pal/signin" element={<SignIn />}></Route>
+                    <Route path="/pal/signup" element={<SignUp />}></Route>
+                    <Route path="/pal/about" element={<About />}></Route>
+                    {/* <Route path="/pal/profile" element={<Profile />}></Route> */}
+                    <Route
+                        path="/*"
+                        element={<h1>404 - Not Found</h1>}
+                    />
                 </Routes>
             </div>
         </BrowserRouter>

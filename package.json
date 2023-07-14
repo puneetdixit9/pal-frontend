@@ -19,7 +19,7 @@
         "react-dom": "^18.2.0",
         "react-redux": "^8.0.5",
         "react-router-dom": "^6.11.0",
-        "react-scripts": "^5.0.1",
+        "react-scripts": "5.0.1",
         "react-test-renderer": "^18.2.0",
         "styled-components": "^5.3.10",
         "web-vitals": "^2.1.4"
@@ -51,8 +51,8 @@
         ]
     },
     "devDependencies": {
-        "dotenv": "16.0.3",
-        "eslint": "8.40.0",
-        "prettier": "2.8.8"
+        "dotenv": "^16.0.3",
+        "eslint": "^8.40.0",
+        "prettier": "^2.8.8"
     }
 }

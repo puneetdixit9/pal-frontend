@@ -7,10 +7,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks'
 import {
     getProducts,
     getConfig,
-    getDistinctFamilyAttributes,
 } from '../../redux/actions/product'
-
-
 
 const Home = () => {
     const dispatch = useAppDispatch()
@@ -30,13 +27,13 @@ const Home = () => {
         <>
             <TopSearch />
             <MainPage />
-            {snackbarState && (productState.message) && (
-                    <SnackbarNotification
-                        message={productState.message}
-                        onClose={() => setSnackbarState(false)}
-                        severity={productState.isError ? 'error' : 'success'}
-                    />
-                )}
+            {snackbarState && productState.message && (
+                <SnackbarNotification
+                    message={productState.message}
+                    onClose={() => setSnackbarState(false)}
+                    severity={productState.isError ? 'error' : 'success'}
+                />
+            )}
         </>
     )
 }
