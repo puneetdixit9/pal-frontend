@@ -138,7 +138,7 @@ function MainPage() {
             ]
 
         setSelectedFamilyConfig(selectedFamilyConfig)
-        setOtherFieldsToDisplay(selectedFamilyConfig.otherFieldsToDispaly)
+        setOtherFieldsToDisplay(selectedFamilyConfig?.otherFieldsToDispaly)
 
         let productAttributesObject = JSON.parse(
             JSON.stringify(productState.products[selectedProductIndex]),
@@ -437,7 +437,7 @@ function MainPage() {
                             {[
                                 selectedProductAttributes.article_desc.toUpperCase(),
                                 ' (',
-                                selectedProductAttributes.article_id.toUpperCase(),
+                                selectedProductAttributes.article_id.toString().toUpperCase(),
                                 ')',
                             ]}
                         </Box>

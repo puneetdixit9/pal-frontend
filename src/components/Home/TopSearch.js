@@ -150,7 +150,7 @@ const TopSearch = () => {
                 filterOptions={(options, state) => {
                     const inputValue = state.inputValue
                     return options.filter(option =>
-                        option.toLowerCase().includes(inputValue.toLowerCase()),
+                        option?.toLowerCase().includes(inputValue.toLowerCase()),
                     )
                 }}
             />
