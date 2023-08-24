@@ -16,7 +16,6 @@ function MainPage() {
     const [missingAtttributesOptions, setMissingAttributeOptions] = useState({})
     const [otherFieldsToDisplay, setOtherFieldsToDisplay] = useState([])
     const productState = useAppSelector(state => state.productReducer)
-    let productItems = []
 
     const [selectedProduct, setselectedProduct] = useState('')
     const [productId, setProductId] = useState('')
@@ -24,7 +23,7 @@ function MainPage() {
         {},
     )
     const [updatedProductAttributes, setUpdatedProductAttributes] = useState({})
-
+    const [products, setProducts] = useState([])
     const [selectedFamilyConfig, setSelectedFamilyConfig] = useState({})
     const [missingChecked, setMissingChecked] = useState(true)
     const [requiredAttributeError, setRequiredAttributeError] = useState(false)
@@ -43,6 +42,10 @@ function MainPage() {
                 productState.distinctFamilyAttributes.response,
         }))
     }, [productState.distinctFamilyAttributes])
+
+    useEffect(() => {
+        setProducts(productState.products)
+    }, [productState.products])
 
     useEffect(() => {
         const labelsWithData = {}
@@ -210,30 +213,35 @@ function MainPage() {
                     updatedProductAttributes,
                 ),
             )
+            setProducts(prevProducts => 
+                prevProducts.map(product => 
+                    product._id === productId ? {...product, missing_attributes: false} : product
+                )
+            )
         }
     }
 
-    if (productState && !productState.isFamilyLoading) {
-        productItems = productState.products
-            .filter(item =>
-                item.article_desc
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()),
-            )
-            .map(item => (
-                <Button
-                    key={item._id}
-                    onClick={selectProductHandle}
-                    sx={{
-                        fontSize: 15,
-                        fontWeight: 'regular',
-                        color: item.missing_attributes ? 'red' : ''
-                    }}
-                >
-                    {item.article_desc}
-                </Button>
-            ))
-    }
+    
+    const productItems = products
+        .filter(item =>
+            item.article_desc
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()),
+        )
+        .map(item => (
+            <Button
+                key={item._id}
+                onClick={selectProductHandle}
+                sx={{
+                    fontSize: 15,
+                    fontWeight: 'regular',
+                    color: item.missing_attributes ? 'red' : ''
+                }}
+            >
+                {item.article_desc}
+            </Button>
+        ))
+    
 
     function renderProductAttributes(label) {
         if (label && label in attributeWithLabelMapping) {
