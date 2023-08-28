@@ -1,4 +1,4 @@
-import apiClient, { uploadApiClient } from '../../services/apiClient'
+import { apiClient, uploadApiClient } from '../../services/apiClient'
 import { PRODUCT, PRODUCTS, CONFIG } from '../../constants'
 
 import {
@@ -40,7 +40,6 @@ function getProductAPIqueryParams(family, brand, category) {
 }
 
 export const getProducts = (family, brand, category) => async dispatch => {
-    // console.log('Calling Action : getProducts()')
     await dispatch(fetchProduct())
     try {
         const queryParams = getProductAPIqueryParams(family, brand, category)
@@ -53,8 +52,6 @@ export const getProducts = (family, brand, category) => async dispatch => {
 }
 
 export const getFamily = brand => async dispatch => {
-    console.log('Calling Action : getFamily()')
-    // console.log("Brand Selected:", brand)
     await dispatch(fetchFamily())
     try {
         let response = ''
@@ -63,8 +60,6 @@ export const getFamily = brand => async dispatch => {
         } else {
             response = await apiClient.get(`${PRODUCTS}/family`)
         }
-        // const response = await apiClient.get(`${PRODUCT}/family`)
-        console.log('Response from getFamily():', response.data)
         return dispatch(fetchFamilySuccess(response.data))
     } catch (err) {
         return dispatch(fetchFamilyFailed(err))
@@ -72,9 +67,6 @@ export const getFamily = brand => async dispatch => {
 }
 
 export const getCategory = (family, brand) => async dispatch => {
-    console.log('Calling Action : getCategory()')
-    // console.log("Family Selected:", family)
-    // console.log("Brand Selected:", brand)
     await dispatch(fetchCategory())
     try {
         let response = ''
@@ -102,7 +94,6 @@ export const getCategory = (family, brand) => async dispatch => {
         } else {
             response = await apiClient.get(`${PRODUCTS}/category`)
         }
-        console.log('Response from getCategory():', response.data)
         return dispatch(fetchCategorySuccess(response.data))
     } catch (err) {
         return dispatch(fetchCategoryFailed(err))
@@ -110,8 +101,6 @@ export const getCategory = (family, brand) => async dispatch => {
 }
 
 export const getBrand = family => async dispatch => {
-    console.log('Calling Action : getBrand()')
-    // console.log("Family Selected:", family)
     await dispatch(fetchBrand())
     try {
         let response = ''
@@ -120,7 +109,6 @@ export const getBrand = family => async dispatch => {
         } else {
             response = await apiClient.get(`${PRODUCTS}/brand`)
         }
-        console.log('Response from getBrand():', response.data)
         return dispatch(fetchBrandSuccess(response.data))
     } catch (err) {
         return dispatch(fetchBrandFailed(err))
@@ -128,11 +116,9 @@ export const getBrand = family => async dispatch => {
 }
 
 export const getConfig = () => async dispatch => {
-    // console.log('Calling Action : getConfig()')
     await dispatch(fetchConfig())
     try {
         const response = await apiClient.get(`${CONFIG}`)
-        // console.log('Response from getConfig():', response.data)
         return dispatch(fetchConfigSuccess(response.data))
     } catch (err) {
         return dispatch(fetchConfigFailed(err))
@@ -141,23 +127,16 @@ export const getConfig = () => async dispatch => {
 
 export const getDistinctFamilyAttributes =
     (family, attribute) => async dispatch => {
-        console.log('Calling Action : distinctFamilyAttributes()')
         await dispatch(fetchDistinctFamilyAttributes())
         try {
             const response = await apiClient.get(
                 `${PRODUCTS}/family/${family}/${attribute}`,
             )
-            console.log(
-                'Response from distinctFamilyAttributes():',
-                response.data,
-            )
+
             const responseWithFields = {
                 response: response.data,
                 attribute: attribute,
             }
-            // let responseWithFields = {}
-            // responseWithFields[attribute] =  response.data
-
             return dispatch(
                 fetchDistinctFamilyAttributesSuccess(responseWithFields),
             )
@@ -168,14 +147,9 @@ export const getDistinctFamilyAttributes =
 
 export const updateProductAttributesAction =
     (id, attributes) => async dispatch => {
-        console.log('Calling Action : updateProductAttributesAction()')
         await dispatch(updateAttributes())
         try {
             const response = await apiClient.put(`${PRODUCT}/${id}`, attributes)
-            console.log(
-                'Response from updateProductAttributesAction():',
-                response.data,
-            )
 
             return dispatch(updateAttributesSuccess())
         } catch (err) {

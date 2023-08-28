@@ -15,7 +15,10 @@ Rename `.env.example` to `.env` and update your project envirnment variables
 
 ```
 ...
-REACT_APP_API_URL=http://localhost:5000
+REACT_APP_BASE_NAME="pal"
+REACT_APP_PAL_API_URL=http://127.0.0.1:5001
+REACT_APP_UMP_API_URL=http://127.0.0.1:5000
+REACT_APP_UMP_SIGNUP=http://localhost:3000/signup
 ...
 ```
 

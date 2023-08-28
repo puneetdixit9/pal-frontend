@@ -54,7 +54,7 @@ const TopBar = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/pal"
+                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -142,19 +142,9 @@ const TopBar = () => {
                             display: { xs: 'none', md: 'flex' },
                         }}
                     >
-                        {UserSession.isAuthenticated() && (
-                            <Button
-                                href="/pal"
-                                key="Dashboard"
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                Dashboard
-                            </Button>
-                        )}
                         <Button
                             key="About"
-                            onClick={() => navigate('/pal/about')}
+                            onClick={() => navigate('/about')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             About
@@ -202,25 +192,9 @@ const TopBar = () => {
                                 >
                                     <MenuItem
                                         onClick={() => {
-                                            navigate('/pal/profile')
-                                        }}
-                                    >
-                                        Profile
-                                    </MenuItem>
-                                    <MenuItem onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">
-                                            Account
-                                        </Typography>
-                                    </MenuItem>
-                                    <MenuItem onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">
-                                            Dashboard
-                                        </Typography>
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={() => {
                                             UserSession.removeUser()
-                                            navigate('/pal/signin')
+                                            UserSession.removeUserPermissions()
+                                            navigate('/signin')
                                         }}
                                     >
                                         Logout
@@ -228,23 +202,7 @@ const TopBar = () => {
                                 </Menu>
                             </Box>
                         </>
-                    ) : location.pathname === '/pal/signup' ? (
-                        <Button
-                            key="Login"
-                            onClick={() => navigate('/pal/signin')}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Login
-                        </Button>
-                    ) : (
-                        <Button
-                            key="Signup"
-                            onClick={() => navigate('/pal/signup')}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Sign Up
-                        </Button>
-                    )}
+                    ) : null}
                 </Toolbar>
             </Container>
         </AppBar>

@@ -3,9 +3,6 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import { Link } from 'react-router-dom'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
@@ -13,31 +10,52 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { login } from '../redux/actions/auth'
+import { login, resetState, getAllowedScreens } from '../redux/actions/auth'
 import CircularProgress from '@mui/material/CircularProgress'
 import { useNavigate } from 'react-router-dom'
 import UserSession from '../services/auth'
+import { useState, useEffect } from 'react'
+import SnackbarNotification from './SnackbarNotification'
 
 const theme = createTheme()
 
 export default function SignIn() {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const state = useAppSelector(state => state.authReducer)
+    const authState = useAppSelector(state => state.authReducer)
 
-    React.useEffect(() => {
+    const [snackbarState, setSnackbarState] = useState(false)
+
+    useEffect(() => {
+
         if (UserSession.isAuthenticated()) {
-            navigate('/pal')
-        } else {
-            navigate('/pal/signin')
+            if (!UserSession.getUserPermissions()) {
+                dispatch(getAllowedScreens())
+            } else {
+                if (UserSession.isAdmin() || UserSession.isPageAllowed("/")) {
+                    navigate("/")
+                } else {
+                    navigate("/profile", { state: { userId: UserSession.getUserId()}})
+                }
+            }
         }
-    }, [UserSession.isAuthenticated()])
+    }, [authState.loginSuccess, authState.fetchPermissionSuccess])
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetState())
+        };
+    }, [])
+
+    useEffect(() => {
+        setSnackbarState(true)
+    }, [authState.message])
 
     const handleSubmit = event => {
         event.preventDefault()
         const data = new FormData(event.currentTarget)
         const context = {
-            username: data.get('email'),
+            email: data.get('email'),
             password: data.get('password'),
         }
         dispatch(login(context))
@@ -45,7 +63,7 @@ export default function SignIn() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="sm">
                 <CssBaseline />
                 <Box
                     sx={{
@@ -88,7 +106,7 @@ export default function SignIn() {
                             autoComplete="current-password"
                         />
 
-                        {state.isLoading && (
+                        {authState.isLoading && (
                             <div>
                                 <CircularProgress />
                             </div>
@@ -105,20 +123,25 @@ export default function SignIn() {
 
                         <Grid container>
                             <Grid item xs>
-                                {/* <Link href="#" variant="body2">
-                  Forgot password?
-                </Link> */}
                             </Grid>
                             <Grid item>
-                                <Link to="/pal/signup" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
+                                <Grid item>
+                                    <a href={process.env.REACT_APP_UMP_SIGNUP} target="_blank" rel="noopener noreferrer">
+                                        {"Don't have an account? Sign Up"}
+                                    </a>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Box>
                 </Box>
-                {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
             </Container>
+            {snackbarState && authState.message && (
+                <SnackbarNotification
+                    message={authState.message}
+                    onClose={() => setSnackbarState(false)}
+                    severity={authState.isError ? 'error' : 'success'}
+                />
+            )}
         </ThemeProvider>
     )
 }
