@@ -57,6 +57,7 @@ export default function SignIn() {
         const context = {
             email: data.get('email'),
             password: data.get('password'),
+            application: process.env.REACT_APP_BASE_NAME,
         }
         dispatch(login(context))
     }
