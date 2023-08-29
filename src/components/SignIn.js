@@ -35,7 +35,7 @@ export default function SignIn() {
                 if (UserSession.isAdmin() || UserSession.isPageAllowed("/")) {
                     navigate("/")
                 } else {
-                    navigate("/profile", { state: { userId: UserSession.getUserId()}})
+                    navigate("/profile", { state: { userId: UserSession.getUserId() } })
                 }
             }
         }
@@ -127,7 +127,7 @@ export default function SignIn() {
                             </Grid>
                             <Grid item>
                                 <Grid item>
-                                    <a href={process.env.REACT_APP_UMP_SIGNUP} target="_blank" rel="noopener noreferrer">
+                                    <a href={process.env.REACT_APP_UMP_SIGNUP + "?redirect=" + window.location.href} target="_self" rel="noopener noreferrer">
                                         {"Don't have an account? Sign Up"}
                                     </a>
                                 </Grid>
