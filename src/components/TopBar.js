@@ -43,6 +43,10 @@ const TopBar = () => {
         setAnchorElUser(null)
     }
 
+    const handleGoToHome = () => {
+        navigate("/")
+    }
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -54,7 +58,7 @@ const TopBar = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
+                        onClick={handleGoToHome}
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
