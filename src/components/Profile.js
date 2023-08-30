@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { CardMedia, TextField } from '@mui/material'
-import Grid from '@mui/material'
 import UserSession from '../services/auth'
-import { password_reset } from '../redux/actions/auth'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-// import
 const Profile = () => {
     const dispatch = useAppDispatch()
     const [user, setUser] = useState({
@@ -31,7 +27,6 @@ const Profile = () => {
             old_password: data.get('old_password'),
             new_password: data.get('new_password'),
         }
-        dispatch(password_reset(context))
     }
     return (
         <>

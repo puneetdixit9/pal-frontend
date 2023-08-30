@@ -39,7 +39,7 @@ export const productReducer = createSlice({
         fetchProductFailed(state, action) {
             return {
                 ...state,
-                message: 'Fetch Products Failed',
+                message: action?.payload?.response?.data['error'] || 'Fetch Products Failed',
                 isError: true,
                 isProductLoading: false,
             }
@@ -138,7 +138,7 @@ export const productReducer = createSlice({
         updateAttributesFailed(state, action) {
             return {
                 ...state,
-                message: 'Update Attributes Failed',
+                message: action.payload.response.data['error'] || 'Update Attributes Failed',
                 isError: true,
                 isAttributeUpdating: false,
                 isAttributeUpdatingError: true,
